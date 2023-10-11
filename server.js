@@ -12,7 +12,7 @@ const server = express()
 
 const wss = new Server({ server });
 
-// empty object to store all players
+var uuid = require('uuid-random');
 var players = {};
 
 // wss.on('connection', (ws) => {
@@ -35,37 +35,29 @@ var players = {};
     // ws.udid = udid
   // })
 // });
+
 wss.on('connection', function connection (client) {
-  console.log('Client connected');
-  client.on('close', () => {
-	  console.log('Client disconnected');
-	  
-	  endClient(client);
-  });
+	client.id = uuid();
+	
+	console.log(`Client ${client.id} connected!`)
+	
+	//Send default client data back to client for reference
+    client.send(`{"id": "${client.id}"}`)
+	
+	// on client disconnect
+	client.on('close', () => {
+	  console.log(`Client ${client.id} disconnected!`)
+	  //endClient(client);
+	});
   
-  // on new message recieved
-  client.on('message', function incoming (data) {
-    // get data from string
-    var [udid, x, y, z, isHost, isEnemy, currentTurn, currentActionList, currentAction] = data.toString().split('\t');
-    // store data to players object
-    players[udid] = {
-      position: {
-        x: parseFloat(x),
-        y: parseFloat(y),
-        z: parseFloat(z)
-      },
-      GUID: udid,
-	  isHost: parseInt(isHost),
-	  isEnemy: parseInt(isEnemy),
-	  currentTurn: parseInt(currentTurn),
-	  currentActionList: currentActionList,
-	  currentAction: parseInt(currentAction)
-    };
-    // save player udid to the client
-	if (isEnemy == "0")
-		client.udid = udid;
-  });
-})
+	// on new message recieved
+	client.on('message', function incoming (data) {
+		var dataJSON = JSON.parse(data)
+
+		console.log("Player Message")
+		console.log(dataJSON)
+	})
+})	
 
 // add general WebSocket error handler
 wss.on('error', function error (error) {
