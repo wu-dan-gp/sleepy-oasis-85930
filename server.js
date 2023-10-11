@@ -96,7 +96,7 @@ function endClient(client) {
 	}
 }
 
-setInterval(() => {
+/* setInterval(() => {
   wss.clients.forEach((client) => {
     // client.send(new Date().toTimeString());
 	
@@ -114,7 +114,7 @@ setInterval(() => {
     // send it
     client.send(JSON.stringify({players: otherPlayersPositions}));
   });
-}, 100);
+}, 100); */
 
 // function broadcastUpdate () {
   // // broadcast messages to all clients
