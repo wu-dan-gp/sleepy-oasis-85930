@@ -44,31 +44,33 @@ wss.on('connection', function connection (client) {
 		socketsid: client.socketsid
 	});
 	
-	console.log(`Client ${client.id} connected!`)
+	console.log(`Client ${client.id} connected!`);
 	
 	//Send client data back to client for reference
-    client.send(`{"id": "${client.id}", "socketsid": "${client.socketsid}"}`)
+    client.send(`{"id": "${client.id}", "socketsid": "${client.socketsid}"}`);
 	
 	// on client disconnect
 	client.on('close', () => {
-	  console.log(`Client ${client.id} disconnected!`)
-	  console.log(`${wss.clients.size}`)
+	  console.log(`Client ${client.id} disconnected!`);
+	  if (wss.clients.size == 0) {
+		players = [];  
+	  }
 	  //endClient(client);
 	});
   
 	// on new message recieved
 	client.on('message', function incoming (data) {
-		var dataJSON = JSON.parse(data)
+		var dataJSON = JSON.parse(data);
 
-		console.log("Player Message")
-		console.log(dataJSON)
-	})
-})	
+		console.log("Player Message");
+		console.log(dataJSON);
+	});
+});
 
 // add general WebSocket error handler
 wss.on('error', function error (error) {
   console.error('WebSocket error', error);
-})
+});
 
 function endClient(client) {
 	
