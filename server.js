@@ -13,13 +13,13 @@ const server = express()
 const wss = new Server({ server });
 
 var uuid = require('uuid-random');
-var players = {};
+var players = [];
 
 // wss.on('connection', (ws) => {
   // console.log('Client connected');
-  // ws.on('close', () => console.log('Client disconnected'));
+  // wss.on('close', () => console.log('Client disconnected'));
   
-  // ws.on('message', function incoming (data) {
+  // wss.on('message', function incoming (data) {
     // // get data from string
     // var [udid, x, y, z] = data.toString().split('\t')
     // // store data to players object
@@ -32,21 +32,27 @@ var players = {};
       // timestamp: Date.now()
     // }
     // // save player udid to the client
-    // ws.udid = udid
+    // wss.udid = udid
   // })
 // });
 
 wss.on('connection', function connection (client) {
-	client.id = uuid();
+	client.socketsid = uuid();
+	client.id = players.length;
+	players.push({
+		id: client.id,
+		socketsid: client.socketsid
+	});
 	
 	console.log(`Client ${client.id} connected!`)
 	
 	//Send default client data back to client for reference
-    client.send(`{"id": "${client.id}"}`)
+    client.send(`{"id": "${client.id}", "socketsid": "${client.socketsid}"}`)
 	
 	// on client disconnect
 	client.on('close', () => {
 	  console.log(`Client ${client.id} disconnected!`)
+	  client.close();
 	  //endClient(client);
 	});
   
