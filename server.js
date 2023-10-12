@@ -52,8 +52,7 @@ wss.on('connection', function connection (client) {
 	// on client disconnect
 	client.on('close', () => {
 	  console.log(`Client ${client.id} disconnected!`)
-	  console.log(`${wss.clients.length}`)
-	  client.close();
+	  console.log(`${wss.clients.size}`)
 	  //endClient(client);
 	});
   
