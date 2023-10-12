@@ -46,12 +46,13 @@ wss.on('connection', function connection (client) {
 	
 	console.log(`Client ${client.id} connected!`)
 	
-	//Send default client data back to client for reference
+	//Send client data back to client for reference
     client.send(`{"id": "${client.id}", "socketsid": "${client.socketsid}"}`)
 	
 	// on client disconnect
 	client.on('close', () => {
 	  console.log(`Client ${client.id} disconnected!`)
+	  console.log(`${wss.clients.length}`)
 	  client.close();
 	  //endClient(client);
 	});
