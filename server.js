@@ -47,7 +47,7 @@ wss.on('connection', function connection (client) {
 	console.log(`Client ${client.id} connected!`);
 	
 	//Send client data back to client for reference
-	client.send(`{"classname": "GameManager", "methodname": "InitPlayersWSS", "params": "${client.id}, ${client.socketsid}"}`);
+	client.send(`{"classname": "GameManager", "methodname": "InitPlayersWSS", "params": "{${client.id}, ${client.socketsid} }"}`);
     //client.send(`{"id": "${client.id}", "socketsid": "${client.socketsid}"}`);
 	
 	// on client disconnect
