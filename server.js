@@ -47,8 +47,7 @@ wss.on('connection', function connection (client) {
 	console.log(`Client ${client.id} connected!`);
 	
 	//Send client data back to client for reference
-	client.send(`{"classname": "GameManager", "methodname": "InitPlayersWSS", "params": "${client.id}, ${client.socketsid} "}`);
-    //client.send(`{"id": "${client.id}", "socketsid": "${client.socketsid}"}`);
+	client.send(`{"classname": "GameManager", "methodname": "InitPlayersWSS", "params": "${client.id}, ${client.socketsid}"}`);
 	
 	// on client disconnect
 	client.on('close', () => {
@@ -56,7 +55,6 @@ wss.on('connection', function connection (client) {
 	  if (wss.clients.size == 0) {
 		players = [];  
 	  }
-	  //endClient(client);
 	});
   
 	// on new message recieved
@@ -65,6 +63,10 @@ wss.on('connection', function connection (client) {
 
 		console.log("Player Message");
 		console.log(dataJSON);
+		
+		wss.clients.forEach(function each(client) {
+		   client.send(dataJSON);
+		});
 	});
 });
 
