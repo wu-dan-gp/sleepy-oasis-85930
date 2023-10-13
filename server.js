@@ -64,8 +64,8 @@ wss.on('connection', function connection (client) {
 		console.log("Player Message");
 		console.log(dataJSON);
 		
-		wss.clients.forEach(function each(client) {
-		   client.send(dataJSON);
+		wss.clients.forEach(function each(aClient) {
+		   aClient.send(`${dataJSON}`);
 		});
 	});
 });
