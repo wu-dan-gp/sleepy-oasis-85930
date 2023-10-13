@@ -52,9 +52,9 @@ wss.on('connection', function connection (client) {
 		players.forEach(function each(player) {
 			var emptyString = "";
 			if (client.id == player.id) {
-				aClient.send(`{"Classname": "GameManager", "Methodname": "InitPlayersWSS", "Parameters": "${player.id}, ${player.socketsid}"}`);
+				aClient.send(`{"Classname": "GameManager", "Methodname": "InitPlayersWSS", "Parameters": "${player.id},${player.socketsid}"}`);
 			} else {
-				aClient.send(`{"Classname": "GameManager", "Methodname": "InitPlayersWSS", "Parameters": "${player.id}, ${emptyString}"}`);
+				aClient.send(`{"Classname": "GameManager", "Methodname": "InitPlayersWSS", "Parameters": "${player.id},${emptyString}"}`);
 			}
 		  
 		});
