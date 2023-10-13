@@ -65,7 +65,7 @@ wss.on('connection', function connection (client) {
 		console.log(dataJSON);
 		
 		wss.clients.forEach(function each(aClient) {
-		   aClient.send(`${dataJSON}`);
+		   aClient.send(`${data}`);
 		});
 	});
 });
