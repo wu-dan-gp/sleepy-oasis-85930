@@ -59,14 +59,10 @@ wss.on('connection', function connection (client) {
   
 	// on new message recieved
 	client.on('message', function incoming (data) {
-		var dataJSON = JSON.parse(data);
-
-		console.log("Player Message");
-		console.log(dataJSON);
-		
-		wss.clients.forEach(function each(aClient) {
-		   aClient.send(`${data}`);
-		});
+		client.send(`${data}`);
+		//wss.clients.forEach(function each(aClient) {
+		//   aClient.send(`${data}`);
+		//});
 	});
 });
 
