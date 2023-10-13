@@ -59,7 +59,7 @@ wss.on('connection', function connection (client) {
   
 	// on new message recieved
 	client.on('message', function incoming (data) {
-		client.send(`${data}`);
+		client.send(`{"Classname": "DialogueManager", "Methodname": "DialogueSelectedAll", "Parameters": ""}`);
 		//wss.clients.forEach(function each(aClient) {
 		//   aClient.send(`${data}`);
 		//});
