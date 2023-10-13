@@ -45,12 +45,17 @@ wss.on('connection', function connection (client) {
 	});
 	
 	console.log(`Client ${client.id} connected!`);
-	client.send(`{"Classname": "GameManager", "Methodname": "InitPlayersWSS", "Parameters": "${client.id}, ${client.socketsid}"}`);
+	//client.send(`{"Classname": "GameManager", "Methodname": "InitPlayersWSS", "Parameters": "${client.id}, ${client.socketsid}"}`);
 	
 	//Send client data back to client for reference
 	wss.clients.forEach(function each(aClient) {
 		players.forEach(function each(player) {
-		  aClient.send(`{"Classname": "GameManager", "Methodname": "InitPlayersWSS", "Parameters": "${player.id}, ${player.socketsid}"}`);
+			if (client.id == player.id) {
+				aClient.send(`{"Classname": "GameManager", "Methodname": "InitPlayersWSS", "Parameters": "${player.id}, ${player.socketsid}"}`);
+			} else {
+				aClient.send(`{"Classname": "GameManager", "Methodname": "InitPlayersWSS", "Parameters": "${player.id}, ''"}`);
+			}
+		  
 		});
 	});
 	
