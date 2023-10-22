@@ -50,10 +50,15 @@ wss.on('connection', function connection (client) {
 			wss.clients.forEach(function each(aClient) {
 				players.forEach(function each(player) {
 					var emptyString = "";
+					
 					if (client.id == player.id) {
-						aClient.send(`{"Classname": "GameManager", "Methodname": "InitPlayersWSS", "Parameters": "{${player.id},${player.socketsid}}"}`);
+						var paramsArray = [${player.id},${player.socketsid}];
+						var paramJson = JSON.stringify(paramsArray);
+						aClient.send(`{"Classname": "GameManager", "Methodname": "InitPlayersWSS", "Parameters": ${paramJson} }`);
 					} else {
-						aClient.send(`{"Classname": "GameManager", "Methodname": "InitPlayersWSS", "Parameters": "{${player.id},${emptyString}}"}`);
+						var paramsArray = [${player.id},${emptyString}];
+						var paramJson = JSON.stringify(paramsArray);
+						aClient.send(`{"Classname": "GameManager", "Methodname": "InitPlayersWSS", "Parameters": ${paramJson} }`);
 					}
 				  
 				});
