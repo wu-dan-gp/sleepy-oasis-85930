@@ -80,6 +80,11 @@ wss.on('connection', function connection (client) {
 			});
 		} else if (json.Classname == "reconnect") {
 			console.log(`handshake reconnect`);
+			if (players.come(x => x.socketsid == json.Methodname) {
+				client.id = x.id;
+				client.id = x.socketsid;
+			}
+			console.log(`Client ${client.id} connected!`);
 		} else {
 			console.log(`broadcast`);
 			wss.clients.forEach(function each(aClient) {
