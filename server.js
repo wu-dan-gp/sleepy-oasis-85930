@@ -37,28 +37,10 @@ var players = [];
 // });
 
 wss.on('connection', function connection (client) {
-	client.socketsid = uuid();
-	client.id = players.length;
-	players.push({
-		id: client.id,
-		socketsid: client.socketsid
-	});
 	
-	console.log(`Client ${client.id} connected!`);
-	//client.send(`{"Classname": "GameManager", "Methodname": "InitPlayersWSS", "Parameters": "${client.id}, ${client.socketsid}"}`);
-	
-	//Send client data back to client for reference
-	wss.clients.forEach(function each(aClient) {
-		players.forEach(function each(player) {
-			var emptyString = "";
-			if (client.id == player.id) {
-				aClient.send(`{"Classname": "GameManager", "Methodname": "InitPlayersWSS", "Parameters": "${player.id},${player.socketsid}"}`);
-			} else {
-				aClient.send(`{"Classname": "GameManager", "Methodname": "InitPlayersWSS", "Parameters": "${player.id},${emptyString}"}`);
-			}
-		  
-		});
-	});
+	// on re/connect do handshake
+	console.log(`a Client connected!`);
+	client.send(`{"Classname": "Handshake", "Methodname": "", "Parameters": ""}`);
 	
 	// on client disconnect
 	client.on('close', () => {
@@ -70,10 +52,39 @@ wss.on('connection', function connection (client) {
   
 	// on new message recieved
 	client.on('message', function incoming (data) {
+		var json = JSON.parse(data);
+		if (json.Classname == "connect") { // connecting first time
+			console.log(`handshake connect`);
+			
+			client.socketsid = uuid();
+			client.id = players.length;
+			players.push({
+				id: client.id,
+				socketsid: client.socketsid
+			});
+			
+			console.log(`Client ${client.id} connected!`);
+			
+			// broadcast to all clients that a client connected so everyone has same list
+			wss.clients.forEach(function each(aClient) {
+				players.forEach(function each(player) {
+					var emptyString = "";
+					if (client.id == player.id) {
+						aClient.send(`{"Classname": "GameManager", "Methodname": "InitPlayersWSS", "Parameters": "${player.id},${player.socketsid}"}`);
+					} else {
+						aClient.send(`{"Classname": "GameManager", "Methodname": "InitPlayersWSS", "Parameters": "${player.id},${emptyString}"}`);
+					}
+				  
+				});
+			});
+		} else if (json.Classname == "reconnect") {
+			console.log(`handshake reconnect`);
+		} else {
+			wss.clients.forEach(function each(aClient) {
+			   aClient.send(`${data}`);
+			});
+		}
 		
-		wss.clients.forEach(function each(aClient) {
-		   aClient.send(`${data}`);
-		});
 	});
 });
 
