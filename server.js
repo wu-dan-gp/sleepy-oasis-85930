@@ -80,7 +80,7 @@ wss.on('connection', function connection (client) {
 			});
 		} else if (json.Classname == "reconnect") {
 			console.log(`handshake reconnect`);
-			if (players.come(x => x.socketsid == json.Methodname) {
+			if (players.some(x => x.socketsid == json.Methodname) {
 				client.id = x.id;
 				client.id = x.socketsid;
 			}
