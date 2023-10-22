@@ -52,10 +52,9 @@ wss.on('connection', function connection (client) {
   
 	// on new message recieved
 	client.on('message', function incoming (data) {
-		console.log(`message received`);
+		
 		var json = JSON.parse(data);
 		if (json.Classname == "connect") { // connecting first time
-			console.log(`handshake connect`);
 			
 			client.socketsid = uuid();
 			client.id = players.length;
@@ -79,12 +78,12 @@ wss.on('connection', function connection (client) {
 				});
 			});
 		} else if (json.Classname == "reconnect") {
-			console.log(`handshake reconnect`);
+			
 			var player = players.find(x => x.socketsid == json.Methodname);
 			if (player !== undefined) {
 				client.id = player.id;
 				client.socketsid = player.socketsid;
-				console.log(`Client ${client.id} connected!`);
+				console.log(`Client ${client.id} reconnected!`);
 			} else {
 				console.log(`error: cannot find client socket id`);
 			}
