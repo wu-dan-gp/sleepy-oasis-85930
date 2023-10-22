@@ -39,7 +39,7 @@ var players = [];
 wss.on('connection', function connection (client) {
 	
 	// on re/connect do handshake
-	console.log(`a Client connected!`);
+	console.log(`a client connected!`);
 	client.send(`{"Classname": "Handshake", "Methodname": "", "Parameters": ""}`);
 	
 	// on client disconnect
@@ -52,6 +52,7 @@ wss.on('connection', function connection (client) {
   
 	// on new message recieved
 	client.on('message', function incoming (data) {
+		console.log(`message received`);
 		var json = JSON.parse(data);
 		if (json.Classname == "connect") { // connecting first time
 			console.log(`handshake connect`);
@@ -80,6 +81,7 @@ wss.on('connection', function connection (client) {
 		} else if (json.Classname == "reconnect") {
 			console.log(`handshake reconnect`);
 		} else {
+			console.log(`broadcast`);
 			wss.clients.forEach(function each(aClient) {
 			   aClient.send(`${data}`);
 			});
