@@ -84,9 +84,11 @@ wss.on('connection', function connection (client) {
 			if (player !== undefined) {
 				client.id = player.id;
 				client.id = player.socketsid;
+				console.log(`Client ${client.id} connected!`);
+			} else {
+				console.log(`error: cannot find client socket id`);
 			}
 			
-			console.log(`Client ${client.id} connected!`);
 		} else {
 			console.log(`broadcast`);
 			wss.clients.forEach(function each(aClient) {
