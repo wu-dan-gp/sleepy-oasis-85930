@@ -15,26 +15,7 @@ const wss = new Server({ server });
 var uuid = require('uuid-random');
 var players = [];
 
-// wss.on('connection', (ws) => {
-  // console.log('Client connected');
-  // wss.on('close', () => console.log('Client disconnected'));
-  
-  // wss.on('message', function incoming (data) {
-    // // get data from string
-    // var [udid, x, y, z] = data.toString().split('\t')
-    // // store data to players object
-    // players[udid] = {
-      // position: {
-        // x: parseFloat(x),
-        // y: parseFloat(y),
-        // z: parseFloat(z)
-      // },
-      // timestamp: Date.now()
-    // }
-    // // save player udid to the client
-    // wss.udid = udid
-  // })
-// });
+// story variables
 
 wss.on('connection', function connection (client) {
 	
@@ -70,9 +51,9 @@ wss.on('connection', function connection (client) {
 				players.forEach(function each(player) {
 					var emptyString = "";
 					if (client.id == player.id) {
-						aClient.send(`{"Classname": "GameManager", "Methodname": "InitPlayersWSS", "Parameters": "${player.id},${player.socketsid}"}`);
+						aClient.send(`{"Classname": "GameManager", "Methodname": "InitPlayersWSS", "Parameters": "{${player.id},${player.socketsid}}"}`);
 					} else {
-						aClient.send(`{"Classname": "GameManager", "Methodname": "InitPlayersWSS", "Parameters": "${player.id},${emptyString}"}`);
+						aClient.send(`{"Classname": "GameManager", "Methodname": "InitPlayersWSS", "Parameters": "{${player.id},${emptyString}}"}`);
 					}
 				  
 				});
