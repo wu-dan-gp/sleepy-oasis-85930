@@ -54,11 +54,11 @@ wss.on('connection', function connection (client) {
 					if (client.id == player.id) {
 						var paramsArray = [`${player.id}`, `${player.socketsid}`];
 						var paramJson = JSON.stringify(paramsArray);
-						aClient.send(`{"Classname": "GameManager", "Methodname": "InitPlayersWSS", "Parameters": ${paramJson} }`);
+						aClient.send(`{"Classname": "GameManager", "Methodname": "InitPlayersWSS", "Parameters": "${paramJson}" }`);
 					} else {
 						var paramsArray = [`${player.id}`, `${emptyString}`];
 						var paramJson = JSON.stringify(paramsArray);
-						aClient.send(`{"Classname": "GameManager", "Methodname": "InitPlayersWSS", "Parameters": ${paramJson} }`);
+						aClient.send(`{"Classname": "GameManager", "Methodname": "InitPlayersWSS", "Parameters": "${paramJson}" }`);
 					}
 				  
 				});
