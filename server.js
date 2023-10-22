@@ -83,7 +83,7 @@ wss.on('connection', function connection (client) {
 			var player = players.find(x => x.socketsid == json.Methodname);
 			if (player !== undefined) {
 				client.id = player.id;
-				client.id = player.socketsid;
+				client.socketsid = player.socketsid;
 				console.log(`Client ${client.id} connected!`);
 			} else {
 				console.log(`error: cannot find client socket id`);
