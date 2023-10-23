@@ -49,16 +49,11 @@ wss.on('connection', function connection (client) {
 			// broadcast to all clients that a client connected so everyone has same list
 			wss.clients.forEach(function each(aClient) {
 				players.forEach(function each(player) {
-					var emptyString = "";
 					
 					if (client.id == player.id) {
-						var paramsArray = [`${player.id}`, `${player.socketsid}`];
-						var paramJson = JSON.stringify(paramsArray);
 						aClient.send(`{"Classname": "GameManager", "Methodname": "InitPlayersWSS", "Parameters": "['${player.id}', '${player.socketsid}']" }`);
 					} else {
-						var paramsArray = [`${player.id}`, `${emptyString}`];
-						var paramJson = JSON.stringify(paramsArray);
-						aClient.send(`{"Classname": "GameManager", "Methodname": "InitPlayersWSS", "Parameters": "${paramJson}" }`);
+						aClient.send(`{"Classname": "GameManager", "Methodname": "InitPlayersWSS", "Parameters": "['${player.id}', '']" }`);
 					}
 				  
 				});
