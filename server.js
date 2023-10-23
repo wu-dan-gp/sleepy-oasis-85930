@@ -54,7 +54,7 @@ wss.on('connection', function connection (client) {
 					if (client.id == player.id) {
 						var paramsArray = [player.id, player.socketsid];
 						var paramJson = JSON.stringify(paramsArray);
-						aClient.send(`{"Classname": "GameManager", "Methodname": "InitPlayersWSS", "Parameters": "["${player.id}", "${player.socketsid}]"" }`);
+						aClient.send(`{"Classname": "GameManager", "Methodname": "InitPlayersWSS", "Parameters": "[\"${player.id}\", \"${player.socketsid}]\"" }`);
 					} else {
 						var paramsArray = [`${player.id}`, `${emptyString}`];
 						var paramJson = JSON.stringify(paramsArray);
