@@ -39,17 +39,28 @@ wss.on('connection', function connection (client) {
 			
 			client.socketsid = uuid();
 			client.id = players.length;
-			if (json.Parameters == "host") {
+			if (json.Methodname == "host") {
 				client.joincode = client.socketsid.substring(0,6);
+				client.gamename = json.Parameters;
+				players.push({
+					id: client.id,
+					socketsid: client.socketsid,
+					joincode: client.joincode,
+					ishost: true,
+					gamename: client.gamename
+				});
 			} else {
 				client.joincode = json.Parameters; // guest of host
+				var host = players.find(x => x.ishost == true);
+				client.gamename = host.gamename;
+				players.push({
+					id: client.id,
+					socketsid: client.socketsid,
+					joincode: client.joincode,
+					ishost: false,
+					gamename: client.gamename
+				});
 			}
-			
-			players.push({
-				id: client.id,
-				socketsid: client.socketsid,
-				joincode: client.joincode
-			});
 			
 			console.log(`Client ${client.id} connected!`);
 			
@@ -58,9 +69,9 @@ wss.on('connection', function connection (client) {
 				players.forEach(function each(player) {
 					
 					if (client.id == player.id) {
-						aClient.send(`{"Classname": "GameManager", "Methodname": "InitPlayersWSS", "Parameters": "['${player.id}', '${player.socketsid}', '${player.joincode}']" }`);
+						aClient.send(`{"Classname": "GameManager", "Methodname": "InitPlayersWSS", "Parameters": "['${player.id}', '${player.socketsid}', '${player.joincode}', '${player.gamename}']" }`);
 					} else {
-						aClient.send(`{"Classname": "GameManager", "Methodname": "InitPlayersWSS", "Parameters": "['${player.id}', '', '']" }`);
+						aClient.send(`{"Classname": "GameManager", "Methodname": "InitPlayersWSS", "Parameters": "['${player.id}', '', '', '']" }`);
 					}
 				  
 				});
