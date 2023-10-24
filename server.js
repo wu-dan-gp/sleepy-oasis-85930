@@ -40,7 +40,7 @@ wss.on('connection', function connection (client) {
 			client.socketsid = uuid();
 			client.id = players.length;
 			if (json.Parameters == "host") {
-				client.joincode = client.socketsid.substring(0,4);
+				client.joincode = client.socketsid.substring(0,6);
 			} else {
 				client.joincode = json.Parameters; // guest of host
 			}
