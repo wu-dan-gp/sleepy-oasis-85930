@@ -88,7 +88,7 @@ wss.on('connection', function connection (client) {
 			}
 			
 		} else {
-			console.log(`broadcast`);
+			console.log(`broadcast: ${json.Classname}`);
 			wss.clients.forEach(function each(aClient) {
 			   aClient.send(`${data}`);
 			});
