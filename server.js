@@ -47,7 +47,7 @@ wss.on('connection', function connection (client) {
 			
 			players.push({
 				id: client.id,
-				socketsid: client.socketsid
+				socketsid: client.socketsid,
 				joincode: client.joincode
 			});
 			
