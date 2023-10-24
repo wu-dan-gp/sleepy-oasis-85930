@@ -39,9 +39,16 @@ wss.on('connection', function connection (client) {
 			
 			client.socketsid = uuid();
 			client.id = players.length;
+			if (json.Parameters == "host") {
+				client.joincode = client.socketsid.substring(0,4);
+			} else {
+				client.joincode = json.Parameters; // guest of host
+			}
+			
 			players.push({
 				id: client.id,
 				socketsid: client.socketsid
+				joincode: client.joincode
 			});
 			
 			console.log(`Client ${client.id} connected!`);
@@ -51,16 +58,16 @@ wss.on('connection', function connection (client) {
 				players.forEach(function each(player) {
 					
 					if (client.id == player.id) {
-						aClient.send(`{"Classname": "GameManager", "Methodname": "InitPlayersWSS", "Parameters": "['${player.id}', '${player.socketsid}']" }`);
+						aClient.send(`{"Classname": "GameManager", "Methodname": "InitPlayersWSS", "Parameters": "['${player.id}', '${player.socketsid}', '${player.joincode}']" }`);
 					} else {
-						aClient.send(`{"Classname": "GameManager", "Methodname": "InitPlayersWSS", "Parameters": "['${player.id}', '']" }`);
+						aClient.send(`{"Classname": "GameManager", "Methodname": "InitPlayersWSS", "Parameters": "['${player.id}']" }`);
 					}
 				  
 				});
 			});
 		} else if (json.Classname == "reconnect") {
 			
-			var player = players.find(x => x.socketsid == json.Methodname);
+			var player = players.find(x => x.socketsid == json.Parameters);
 			if (player !== undefined) {
 				client.id = player.id;
 				client.socketsid = player.socketsid;
