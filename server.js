@@ -60,7 +60,7 @@ wss.on('connection', function connection (client) {
 					if (client.id == player.id) {
 						aClient.send(`{"Classname": "GameManager", "Methodname": "InitPlayersWSS", "Parameters": "['${player.id}', '${player.socketsid}', '${player.joincode}']" }`);
 					} else {
-						aClient.send(`{"Classname": "GameManager", "Methodname": "InitPlayersWSS", "Parameters": "['${player.id}']" }`);
+						aClient.send(`{"Classname": "GameManager", "Methodname": "InitPlayersWSS", "Parameters": "['${player.id}', '', '']" }`);
 					}
 				  
 				});
