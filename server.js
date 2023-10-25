@@ -33,7 +33,7 @@ wss.on('connection', function connection (client) {
   
 	// on new message recieved
 	client.on('message', function incoming (data) {
-		
+		console.log(data);
 		var json = JSON.parse(data);
 		if (json.Classname == "connect") { // connecting first time
 			
@@ -93,9 +93,9 @@ wss.on('connection', function connection (client) {
 			
 			if (json.Methodname == "DialogueSelectedAll") {
 				storystate = json.Parameters;
-				console.log(`storystate: ${storystate}`);
+				//console.log(`storystate: ${storystate}`);
 			} else if (json.Methodname == "MakeChoiceAll") {
-				console.log(`storystate: ${json.Parameters}`);
+				//console.log(`storystate: ${json.Parameters}`);
 				var paramArray = json.Parameters;
 				paramArray = paramArray.replace(/'/g, '"');
 				//var paramArray = JSON.parse(paramArray);
