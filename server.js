@@ -93,12 +93,12 @@ wss.on('connection', function connection (client) {
 			
 			if (json.Methodname == "DialogueSelectedAll") {
 				storystate = json.Parameters;
-				//console.log(`storystate: ${storystate}`);
+				console.log(`storystate: ${storystate}`);
 			} else if (json.Methodname == "MakeChoiceAll") {
-				//console.log(`storystate: ${json.Parameters}`);
 				var paramArray = json.Parameters;
 				paramArray =  "[" + paramArray.substring(5);
-				console.log(`storystate: "${paramArray}"`);
+				console.log(`storystate: ${paramArray}`);
+				storystate = paramArray;
 			}
 			
 			wss.clients.forEach(function each(aClient) {
