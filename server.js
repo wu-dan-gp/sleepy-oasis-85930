@@ -14,8 +14,8 @@ const wss = new Server({ server });
 
 var uuid = require('uuid-random');
 var players = [];
+var storystate = ""; // inkle story state
 
-// story variables
 
 wss.on('connection', function connection (client) {
 	
@@ -89,6 +89,19 @@ wss.on('connection', function connection (client) {
 			
 		} else {
 			console.log(`broadcast: ${json.Classname}`);
+			
+			if (json.Methodname == "DialogueSelectedAll") {
+				storystate = json.Parameters;
+				console.log(`storystate: ${storystate}`);
+			} else if (json.Methodname == "MakeChoiceAll") {
+				// deserialize
+				var jsonStoryState = JSON.parse(json.Parameters);
+				// remove 1st Element
+				jsonStoryState.shift();
+				storystate = "'" + jsonStoryState + "'";
+				console.log(`storystate: ${storystate}`);
+			}
+			
 			wss.clients.forEach(function each(aClient) {
 			   aClient.send(`${data}`);
 			});
