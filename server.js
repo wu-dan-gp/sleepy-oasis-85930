@@ -95,11 +95,13 @@ wss.on('connection', function connection (client) {
 				storystate = json.Parameters;
 				console.log(`storystate: ${storystate}`);
 			} else if (json.Methodname == "MakeChoiceAll") {
+				console.log(`storystate: ${json.Parameters}`);
 				var paramArray = json.Parameters;
+				paramArray = paramArray.replace(/'/g, '"');
 				// deserialize
 				//var jsonStoryState = JSON.parse(json.Parameters);
 				// remove 1st Element
-				paramArray.shift();
+				//paramArray.shift();
 				//storystate = "'" + jsonStoryState + "'";
 				console.log(`storystate: ${paramArray}`);
 			}
