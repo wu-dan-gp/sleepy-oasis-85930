@@ -97,7 +97,7 @@ wss.on('connection', function connection (client) {
 			} else if (json.Methodname == "MakeChoiceAll") {
 				//console.log(`storystate: ${json.Parameters}`);
 				var paramArray = json.Parameters;
-				paramArray =  "[" + params.substring(5);
+				paramArray =  "[" + paramArray.substring(5);
 				console.log(`storystate: "${paramArray}"`);
 			}
 			
