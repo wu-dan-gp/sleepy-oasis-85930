@@ -83,7 +83,7 @@ wss.on('connection', function connection (client) {
 				client.id = player.id;
 				client.socketsid = player.socketsid;
 				console.log(`Client ${client.id} reconnected!`);
-				client.send(`{"Classname": "DialogueManager", "Methodname": "DialogueSelectedAll", "Parameters": "${JSON.stringify(storystate)}"}`);
+				client.send(`{"Classname": "DialogueManager", "Methodname": "DialogueSelectedAll", "Parameters": ${JSON.stringify(storystate)}}`);
 				console.log(`storystate: ${JSON.stringify(storystate)}`);
 			} else {
 				console.log(`error: cannot find client socket id: ${json.Parameters}`);
