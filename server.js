@@ -83,6 +83,7 @@ wss.on('connection', function connection (client) {
 				client.id = player.id;
 				client.socketsid = player.socketsid;
 				console.log(`Client ${client.id} reconnected!`);
+				client.send(`{"Classname": "DialogueManager", "Methodname": "DialogueSelectedAll", "Parameters": ${storystate}}`);
 			} else {
 				console.log(`error: cannot find client socket id`);
 			}
@@ -98,8 +99,8 @@ wss.on('connection', function connection (client) {
 				var jsonStoryState = JSON.parse(json.Parameters);
 				// remove 1st Element
 				jsonStoryState.shift();
-				storystate = "'" + jsonStoryState + "'";
-				console.log(`storystate: ${storystate}`);
+				//storystate = "'" + jsonStoryState + "'";
+				console.log(`storystate: ${jsonStoryState}`);
 			}
 			
 			wss.clients.forEach(function each(aClient) {
