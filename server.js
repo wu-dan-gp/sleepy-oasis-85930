@@ -98,10 +98,11 @@ wss.on('connection', function connection (client) {
 				console.log(`storystate: ${json.Parameters}`);
 				var paramArray = json.Parameters;
 				paramArray = paramArray.replace(/'/g, '"');
+				var paramArray = JSON.parse(paramArray);
 				// deserialize
 				//var jsonStoryState = JSON.parse(json.Parameters);
 				// remove 1st Element
-				paramArray.shift();
+				//paramArray.shift();
 				//storystate = "'" + jsonStoryState + "'";
 				console.log(`storystate: ${paramArray}`);
 			}
