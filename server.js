@@ -33,7 +33,7 @@ wss.on('connection', function connection (client) {
   
 	// on new message recieved
 	client.on('message', function incoming (data) {
-		console.log(data);
+		
 		var json = JSON.parse(data);
 		if (json.Classname == "connect") { // connecting first time
 			
