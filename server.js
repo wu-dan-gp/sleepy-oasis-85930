@@ -75,7 +75,7 @@ wss.on('connection', function connection (client) {
 			var playerRoomOuter = players.filter(x => x.joincode == client.joincode);
 
 			// broadcast to all clients in a room that a client connected so they have same list
-			wss.clients.forEach(function each(aClient) {
+			/*wss.clients.forEach(function each(aClient) {
 				console.log(`aClient.id ${aClient.id} `);
 				playerRoomInner.forEach(function each(player) {
 					console.log(`player.id ${player.id} `);
@@ -86,9 +86,9 @@ wss.on('connection', function connection (client) {
 					}
 				
 				});
-			});
+			});*/
 
-			/*wss.clients.forEach(function each(aClient) {
+			wss.clients.forEach(function each(aClient) {
 				players.forEach(function each(player) {
 					
 					if (client.id == player.id) {
@@ -98,7 +98,7 @@ wss.on('connection', function connection (client) {
 					}
 				
 				});
-			});*/
+			});
 		} else if (json.Classname == "reconnect") {
 			
 			var player = players.find(x => x.socketsid == json.Parameters);
