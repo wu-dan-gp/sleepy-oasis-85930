@@ -27,8 +27,9 @@ wss.on('connection', function connection (client) {
 	// on client disconnect
 	client.on('close', () => {
 		console.log(`Client ${client.socketsid} disconnected!`);
-		var wssClients = wss.clients;
-		var isRoomEmpty = wssClients.find(x => x.joincode == client.joincode);
+		
+		client.connected = false;
+		var isRoomEmpty = players.find(x => x.joincode == client.joincode && x.connected == true);
 		
 		console.log(util.inspect(isRoomEmpty, {showHidden: false, depth: null, colors: true}));
 		if (isRoomEmpty == undefined) { // no more players in this room
@@ -52,13 +53,14 @@ wss.on('connection', function connection (client) {
 			var playerRoom = players.filter(x => x.joincode == json.JoinCode);
 			client.id =  playerRoom.length;
 			client.joincode = json.JoinCode;
+			client.connected = true;
 
 			if (json.HostOrGuest == "host") {
 				client.gamename = json.GameName;
 				client.ishost = true;
 				players.push(client);
 			} else { // guest of host
-				var host = players.find(x => x.ishost == true && x.joincode == json.JsonCode);
+				var host = players.find(x => x.ishost == true && x.joincode == client.joincode);
 				console.log(util.inspect(host, {showHidden: false, depth: null, colors: true}));
 				client.gamename = host.gamename;
 				client.ishost = false;
@@ -66,7 +68,7 @@ wss.on('connection', function connection (client) {
 			}
 			
 			console.log(`Client ${client.socketsid} connected!`);
-			playerRoom = players.filter(x => x.joincode == json.JoinCode);
+			playerRoom = players.filter(x => x.joincode == client.joincode);
 			
 			// broadcast to all clients in a room that a client connected so they have same list
 			playerRoom.forEach(function each(player) {
@@ -93,11 +95,12 @@ wss.on('connection', function connection (client) {
 			
 			var player = players.find(x => x.socketsid == json.Parameters);
 			if (player !== undefined) {
-				client.id = player.id;
+				/*client.id = player.id;
 				client.socketsid = player.socketsid;
 				client.joincode = player.joincode;
 				client.gamename = player.gamename;
 				client.ishost = player.ishost;
+				client.connected = true;*/
 				console.log(`Client ${client.socketsid} reconnected!`);
 				client.send(`{"Classname": "DialogueManager", "Methodname": "DialogueSelectedAll", "Parameters": ${JSON.stringify(storystate)}}`);
 				//console.log(`storystate: ${JSON.stringify(storystate)}`);
