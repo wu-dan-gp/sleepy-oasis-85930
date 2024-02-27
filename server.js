@@ -27,7 +27,7 @@ wss.on('connection', function connection (client) {
 	// on client disconnect
 	client.on('close', () => {
 	  console.log(`Client ${client.socketsid} disconnected!`);
-	  var isRoomEmpty = wss.clients.find(x => x.joincode == client.joincode);
+	  var isRoomEmpty = players.find(x => x.joincode == client.joincode);
 
 	  if (isRoomEmpty == undefined) { // no more players in this room
 		players = players.filter(x => x.joincode !== client.joincode);
@@ -49,15 +49,14 @@ wss.on('connection', function connection (client) {
 			var playerRoom = players.filter(x => x.joincode == json.JoinCode);
 			client.id =  playerRoom.length;
 			client.joincode = json.JoinCode;
-			console.log(`json.HostOrGuest: ${json.HostOrGuest}`);
+			console.log(`playerRoom: ${playerRoom.length}`);
+
 			if (json.HostOrGuest == "host") {
 				client.gamename = json.GameName;
 				client.ishost = true;
 				players.push(client);
 			} else { // guest of host
-				
-
-				var host = players.find(x => x.ishost == true);
+				var host = players.find(x => x.ishost == true && x.joincode == json.JsonCode);
 				console.log(util.inspect(host, {showHidden: false, depth: null, colors: true}));
 				client.gamename = host.gamename;
 				client.ishost = false;
