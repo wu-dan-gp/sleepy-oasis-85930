@@ -89,8 +89,9 @@ wss.on('connection', function connection (client) {
 			});*/
 
 			wss.clients.forEach(function each(aClient) {
+				console.log(`aClient.id ${aClient.id} `);
 				players.forEach(function each(player) {
-					
+					console.log(`player.id ${player.id} `);
 					if (client.id == player.id) {
 						aClient.send(`{"Classname": "GameManager", "Methodname": "InitPlayersWSS", "Parameters": "['${player.id}', '${player.socketsid}', '${player.joincode}', '${player.gamename}']" }`);
 					} else {
