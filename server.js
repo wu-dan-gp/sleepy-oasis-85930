@@ -31,11 +31,12 @@ wss.on('connection', function connection (client) {
 		client.connected = false;
 		var isRoomEmpty = players.find(x => x.joincode == client.joincode && x.connected == true);
 		
-		console.log(util.inspect(isRoomEmpty, {showHidden: false, depth: null, colors: true}));
+		//console.log(util.inspect(isRoomEmpty, {showHidden: false, depth: null, colors: true}));
 		if (isRoomEmpty == undefined) { // no more players in this room
 			players = players.filter(x => x.joincode !== client.joincode);
 	  	}
 		console.log(`wss.clients.size ${wss.clients.size} `);
+		console.log(`players.length ${players.length} `);
 
 	  	// clear if no players
 	  	if (wss.clients.size == 0) {
@@ -63,7 +64,7 @@ wss.on('connection', function connection (client) {
 				players.push(client);
 			} else { // guest of host
 				var host = players.find(x => x.ishost == true && x.joincode == client.joincode);
-				console.log(util.inspect(host, {showHidden: false, depth: null, colors: true}));
+				//console.log(util.inspect(host, {showHidden: false, depth: null, colors: true}));
 				client.gamename = host.gamename;
 				client.ishost = false;
 				players.push(client);
@@ -71,6 +72,7 @@ wss.on('connection', function connection (client) {
 			
 			console.log(`Client ${client.socketsid} connected!`);
 			playerRoom = players.filter(x => x.joincode == client.joincode);
+			console.log(`playerRoom.length ${playerRoom.length} `);
 			
 			// broadcast to all clients in a room that a client connected so they have same list
 			playerRoom.forEach(function each(player) {
