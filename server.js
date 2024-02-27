@@ -49,7 +49,6 @@ wss.on('connection', function connection (client) {
 			var playerRoom = players.filter(x => x.joincode == json.JoinCode);
 			client.id =  playerRoom.length;
 			client.joincode = json.JoinCode;
-			console.log(`playerRoom: ${playerRoom.length}`);
 
 			if (json.HostOrGuest == "host") {
 				client.gamename = json.GameName;
@@ -64,6 +63,7 @@ wss.on('connection', function connection (client) {
 			}
 			
 			console.log(`Client ${client.socketsid} connected!`);
+			playerRoom = players.filter(x => x.joincode == json.JoinCode);
 			
 			// broadcast to all clients in a room that a client connected so they have same list
 			playerRoom.forEach(function each(player) {
