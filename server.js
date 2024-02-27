@@ -25,7 +25,14 @@ wss.on('connection', function connection (client) {
 	
 	// on client disconnect
 	client.on('close', () => {
-	  console.log(`Client ${client.id} disconnected!`);
+	  console.log(`Client ${client.socketsid} disconnected!`);
+	  var isRoomEmpty = wss.clients.find(x => x.joincode == client.joincode);
+
+	  if (isRoomEmpty == undefined) { // no more players in this room
+		players = players.filter(x => x.joincode !== client.joincode);
+	  }
+	  
+	  // clear if no players
 	  if (wss.clients.size == 0) {
 		players = [];  
 	  }
@@ -38,34 +45,34 @@ wss.on('connection', function connection (client) {
 		if (json.Classname == "connect") { // connecting first time
 			
 			client.socketsid = uuid();
-			client.id = players.length;
-			if (json.Methodname == "host") {
-				client.joincode = client.socketsid.substring(0,6);
-				client.gamename = json.Parameters;
-				players.push({
-					id: client.id,
-					socketsid: client.socketsid,
-					joincode: client.joincode,
-					ishost: true,
-					gamename: client.gamename
-				});
-			} else {
-				client.joincode = json.Parameters; // guest of host
+			var playerRoom = wss.clients.filter(x => x.joincode == json.JoinCode);
+			client.id =  playerRoom.length;
+			client.joincode = json.JoinCode;
+
+			if (json.HostOrGuest == "host") {
+				client.gamename = json.GameName;
+				client.ishost = true;
+				players.push(client);
+			} else { // guest of host
 				var host = players.find(x => x.ishost == true);
 				client.gamename = host.gamename;
-				players.push({
-					id: client.id,
-					socketsid: client.socketsid,
-					joincode: client.joincode,
-					ishost: false,
-					gamename: client.gamename
-				});
+				client.ishost = false;
+				players.push(client);
 			}
 			
-			console.log(`Client ${client.id} connected!`);
+			console.log(`Client ${client.socketsid} connected!`);
 			
-			// broadcast to all clients that a client connected so everyone has same list
-			wss.clients.forEach(function each(aClient) {
+			// broadcast to all clients in a room that a client connected so they have same list
+			playerRoom.forEach(function each(player) {
+					
+				if (client.id == player.id) {
+					player.send(`{"Classname": "GameManager", "Methodname": "InitPlayersWSS", "Parameters": "['${player.id}', '${player.socketsid}', '${player.joincode}', '${player.gamename}']" }`);
+				} else {
+					player.send(`{"Classname": "GameManager", "Methodname": "InitPlayersWSS", "Parameters": "['${player.id}', '', '', '']" }`);
+				}
+			
+			});
+			/*wss.clients.forEach(function each(aClient) {
 				players.forEach(function each(player) {
 					
 					if (client.id == player.id) {
@@ -73,16 +80,19 @@ wss.on('connection', function connection (client) {
 					} else {
 						aClient.send(`{"Classname": "GameManager", "Methodname": "InitPlayersWSS", "Parameters": "['${player.id}', '', '', '']" }`);
 					}
-				  
+				
 				});
-			});
+			});*/
 		} else if (json.Classname == "reconnect") {
 			
 			var player = players.find(x => x.socketsid == json.Parameters);
 			if (player !== undefined) {
 				client.id = player.id;
 				client.socketsid = player.socketsid;
-				console.log(`Client ${client.id} reconnected!`);
+				client.joincode = player.joincode;
+				client.gamename = player.gamename;
+				client.ishost = player.ishost;
+				console.log(`Client ${client.socketsid} reconnected!`);
 				client.send(`{"Classname": "DialogueManager", "Methodname": "DialogueSelectedAll", "Parameters": ${JSON.stringify(storystate)}}`);
 				//console.log(`storystate: ${JSON.stringify(storystate)}`);
 			} else {
@@ -92,15 +102,19 @@ wss.on('connection', function connection (client) {
 		} else {
 			console.log(`broadcast: ${json.Classname} ${json.Methodname}`);
 			
-			if (json.Methodname == "DialogueSelectedAll") {
+			/*if (json.Methodname == "DialogueSelectedAll") {
 				storystate = json.Parameters;
 			} else if (json.Methodname == "MakeChoiceAll") {
 				storystate = json.Parameters;
-			}
+			}*/
 			
-			wss.clients.forEach(function each(aClient) {
-			   aClient.send(`${data}`);
+			var playerRoom = wss.clients.filter(x => x.joincode == client.joincode);
+			playerRoom.forEach(function each(player) {		
+				player.send(`${data}`);
 			});
+			/*wss.clients.forEach(function each(aClient) {
+			   aClient.send(`${data}`);
+			});*/
 		}
 		
 	});
