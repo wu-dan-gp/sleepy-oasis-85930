@@ -29,7 +29,8 @@ wss.on('connection', function connection (client) {
 		console.log(`Client ${client.socketsid} disconnected!`);
 		var wssClients = wss.clients;
 		var isRoomEmpty = wssClients.find(x => x.joincode == client.joincode);
-		console.log(`isRoomEmpty ${isRoomEmpty} `);
+		
+		console.log(util.inspect(isRoomEmpty, {showHidden: false, depth: null, colors: true}));
 		if (isRoomEmpty == undefined) { // no more players in this room
 			players = players.filter(x => x.joincode !== client.joincode);
 	  	}
