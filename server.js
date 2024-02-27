@@ -72,18 +72,20 @@ wss.on('connection', function connection (client) {
 			
 			console.log(`Client ${client.socketsid} connected!`);
 			playerRoom = players.filter(x => x.joincode == client.joincode);
-			console.log(`playerRoom.length ${playerRoom.length} `);
 
 			// broadcast to all clients in a room that a client connected so they have same list
-			playerRoom.forEach(function each(player) {
-				console.log(`player.id ${player.id} `);
-				if (client.id == player.id) {
-					player.send(`{"Classname": "GameManager", "Methodname": "InitPlayersWSS", "Parameters": "['${player.id}', '${player.socketsid}', '${player.joincode}', '${player.gamename}']" }`);
-				} else {
-					player.send(`{"Classname": "GameManager", "Methodname": "InitPlayersWSS", "Parameters": "['${player.id}', '', '', '']" }`);
-				}
-			
+			playerRoom.forEach(function each(aClient) {
+				playerRoom.forEach(function each(player) {
+
+					if (client.id == player.id) {
+						player.send(`{"Classname": "GameManager", "Methodname": "InitPlayersWSS", "Parameters": "['${player.id}', '${player.socketsid}', '${player.joincode}', '${player.gamename}']" }`);
+					} else {
+						player.send(`{"Classname": "GameManager", "Methodname": "InitPlayersWSS", "Parameters": "['${player.id}', '', '', '']" }`);
+					}
+				
+				});
 			});
+
 			/*wss.clients.forEach(function each(aClient) {
 				players.forEach(function each(player) {
 					
