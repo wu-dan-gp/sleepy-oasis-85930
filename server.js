@@ -26,17 +26,18 @@ wss.on('connection', function connection (client) {
 	
 	// on client disconnect
 	client.on('close', () => {
-	  console.log(`Client ${client.socketsid} disconnected!`);
-	  var isRoomEmpty = players.find(x => x.joincode == client.joincode);
-
-	  if (isRoomEmpty == undefined) { // no more players in this room
-		players = players.filter(x => x.joincode !== client.joincode);
-	  }
-	  
-	  // clear if no players
-	  if (wss.clients.size == 0) {
-		players = [];  
-	  }
+		console.log(`Client ${client.socketsid} disconnected!`);
+		var isRoomEmpty = players.find(x => x.joincode == client.joincode);
+		console.log(`isRoomEmpty ${isRoomEmpty} `);
+		if (isRoomEmpty == undefined) { // no more players in this room
+			players = players.filter(x => x.joincode !== client.joincode);
+	  	}
+		console.log(`wss.clients.size ${wss.clients.size} `);
+		
+	  	// clear if no players
+	  	if (wss.clients.size == 0) {
+			players = [];  
+	  	}
 	});
   
 	// on new message recieved
