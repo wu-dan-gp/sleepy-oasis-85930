@@ -55,6 +55,8 @@ wss.on('connection', function connection (client) {
 			client.joincode = json.JoinCode;
 			client.connected = true;
 
+			console.log(`client.joincode  ${client.joincode}`);
+
 			if (json.HostOrGuest == "host") {
 				client.gamename = json.GameName;
 				client.ishost = true;
