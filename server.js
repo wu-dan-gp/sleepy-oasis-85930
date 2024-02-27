@@ -71,13 +71,13 @@ wss.on('connection', function connection (client) {
 			}
 			
 			console.log(`Client ${client.socketsid} connected!`);
-			playerRoom = players.filter(x => x.joincode == client.joincode);
+			var playerRoomInner = players.filter(x => x.joincode == client.joincode);
 			var playerRoomOuter = players.filter(x => x.joincode == client.joincode);
 
 			// broadcast to all clients in a room that a client connected so they have same list
 			playerRoomOuter.forEach(function each(aClient) {
 				console.log(`aClient.id ${aClient.id} `);
-				playerRoom.forEach(function each(player) {
+				playerRoomInner.forEach(function each(player) {
 					console.log(`player.id ${player.id} `);
 					if (client.id == player.id) {
 						player.send(`{"Classname": "GameManager", "Methodname": "InitPlayersWSS", "Parameters": "['${player.id}', '${player.socketsid}', '${player.joincode}', '${player.gamename}']" }`);
