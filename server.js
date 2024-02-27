@@ -1,5 +1,6 @@
 'use strict';
 
+const util = require('util');
 const express = require('express');
 const { Server } = require('ws');
 
@@ -48,13 +49,16 @@ wss.on('connection', function connection (client) {
 			var playerRoom = wss.clients.filter(x => x.joincode == json.JoinCode);
 			client.id =  playerRoom.length;
 			client.joincode = json.JoinCode;
-
+			console.log(`json.HostOrGuest: ${json.HostOrGuest}`);
 			if (json.HostOrGuest == "host") {
 				client.gamename = json.GameName;
 				client.ishost = true;
 				players.push(client);
 			} else { // guest of host
+				
+
 				var host = players.find(x => x.ishost == true);
+				console.log(util.inspect(host, {showHidden: false, depth: null, colors: true}));
 				client.gamename = host.gamename;
 				client.ishost = false;
 				players.push(client);
