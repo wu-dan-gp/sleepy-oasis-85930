@@ -46,7 +46,7 @@ wss.on('connection', function connection (client) {
 		if (json.Classname == "connect") { // connecting first time
 			
 			client.socketsid = uuid();
-			var playerRoom = wss.clients.filter(x => x.joincode == json.JoinCode);
+			var playerRoom = players.filter(x => x.joincode == json.JoinCode);
 			client.id =  playerRoom.length;
 			client.joincode = json.JoinCode;
 			console.log(`json.HostOrGuest: ${json.HostOrGuest}`);
