@@ -33,7 +33,7 @@ wss.on('connection', function connection (client) {
 			players = players.filter(x => x.joincode !== client.joincode);
 	  	}
 		console.log(`wss.clients.size ${wss.clients.size} `);
-		
+
 	  	// clear if no players
 	  	if (wss.clients.size == 0) {
 			players = [];  
@@ -112,7 +112,7 @@ wss.on('connection', function connection (client) {
 				storystate = json.Parameters;
 			}*/
 			
-			var playerRoom = wss.clients.filter(x => x.joincode == client.joincode);
+			var playerRoom = players.filter(x => x.joincode == client.joincode);
 			playerRoom.forEach(function each(player) {		
 				player.send(`${data}`);
 			});
