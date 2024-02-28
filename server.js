@@ -106,7 +106,7 @@ wss.on('connection', function connection (client) {
 				console.log(`Client ${client.socketsid} reconnected!`);
 
 				players.splice(players.indexOf(player), 1);
-				players.push(player);
+				players.push(client);
 
 				//client.send(`${storystate}`);
 				//client.send(`{"Classname": "DialogueManager", "Methodname": "DialogueSelectedAll", "Parameters": ${JSON.stringify(storystate)}}`);
