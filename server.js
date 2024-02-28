@@ -103,10 +103,12 @@ wss.on('connection', function connection (client) {
 				client.gamename = player.gamename;
 				client.ishost = player.ishost;
 				client.connected = true;
-				player = client;
 				console.log(`Client ${client.socketsid} reconnected!`);
 
-				client.send(`${storystate}`);
+				//const index = players.indexOf(2);
+				//const x = myArray.splice(index, 1);
+
+				//client.send(`${storystate}`);
 				//client.send(`{"Classname": "DialogueManager", "Methodname": "DialogueSelectedAll", "Parameters": ${JSON.stringify(storystate)}}`);
 				//console.log(`storystate: ${JSON.stringify(storystate)}`);
 			} else {
@@ -115,10 +117,12 @@ wss.on('connection', function connection (client) {
 			
 		} else {
 			console.log(`broadcast: ${json.Classname} ${json.Methodname}`);
-			storystate = data;
+			//storystate = data;
+			//storystate = json.Parameters;
 			
 			var playerRoom = players.filter(x => x.joincode == client.joincode);
 			playerRoom.forEach(function each(player) {		
+				console.log(`send to player.socketsid ${player.socketsid}`);
 				player.send(`${data}`);
 			});
 
