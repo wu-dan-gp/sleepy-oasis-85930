@@ -97,14 +97,16 @@ wss.on('connection', function connection (client) {
 			
 			var player = players.find(x => x.socketsid == json.Parameters);
 			if (player !== undefined) {
-				/*client.id = player.id;
+				client.id = player.id;
 				client.socketsid = player.socketsid;
 				client.joincode = player.joincode;
 				client.gamename = player.gamename;
 				client.ishost = player.ishost;
-				client.connected = true;*/
+				client.connected = true;
 				console.log(`Client ${client.socketsid} reconnected!`);
-				client.send(`{"Classname": "DialogueManager", "Methodname": "DialogueSelectedAll", "Parameters": ${JSON.stringify(storystate)}}`);
+
+				client.send(`${storystate}`);
+				//client.send(`{"Classname": "DialogueManager", "Methodname": "DialogueSelectedAll", "Parameters": ${JSON.stringify(storystate)}}`);
 				//console.log(`storystate: ${JSON.stringify(storystate)}`);
 			} else {
 				console.log(`error: cannot find client socket id: ${json.Parameters}`);
@@ -112,6 +114,7 @@ wss.on('connection', function connection (client) {
 			
 		} else {
 			console.log(`broadcast: ${json.Classname} ${json.Methodname}`);
+			storystate = data;
 			
 			var playerRoom = players.filter(x => x.joincode == client.joincode);
 			playerRoom.forEach(function each(player) {		
