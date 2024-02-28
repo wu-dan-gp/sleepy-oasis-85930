@@ -103,6 +103,7 @@ wss.on('connection', function connection (client) {
 				client.gamename = player.gamename;
 				client.ishost = player.ishost;
 				client.connected = true;
+				player = client;
 				console.log(`Client ${client.socketsid} reconnected!`);
 
 				client.send(`${storystate}`);
