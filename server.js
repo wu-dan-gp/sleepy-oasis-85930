@@ -65,9 +65,14 @@ wss.on('connection', function connection (client) {
 			} else { // guest of host
 				var host = players.find(x => x.ishost == true && x.joincode == client.joincode);
 				//console.log(util.inspect(host, {showHidden: false, depth: null, colors: true}));
-				client.gamename = host.gamename;
-				client.ishost = false;
-				players.push(client);
+				if (host !== undefined) {
+					client.gamename = host.gamename;
+					client.ishost = false;
+					players.push(client);
+				} else {
+					console.log(`error: cannot find joincode: ${client.joincode}`);
+				}
+				
 			}
 			
 			console.log(`Client ${client.socketsid} connected!`);
@@ -87,18 +92,7 @@ wss.on('connection', function connection (client) {
 				});
 			});
 
-			/*wss.clients.forEach(function each(aClient) {
-				console.log(`aClient.id ${aClient.id} `);
-				players.forEach(function each(player) {
-					console.log(`player.id ${player.id} `);
-					if (client.id == player.id) {
-						aClient.send(`{"Classname": "GameManager", "Methodname": "InitPlayersWSS", "Parameters": "['${player.id}', '${player.socketsid}', '${player.joincode}', '${player.gamename}']" }`);
-					} else {
-						aClient.send(`{"Classname": "GameManager", "Methodname": "InitPlayersWSS", "Parameters": "['${player.id}', '', '', '']" }`);
-					}
-				
-				});
-			});*/
+			
 		} else if (json.Classname == "reconnect") {
 			
 			var player = players.find(x => x.socketsid == json.Parameters);
@@ -119,19 +113,11 @@ wss.on('connection', function connection (client) {
 		} else {
 			console.log(`broadcast: ${json.Classname} ${json.Methodname}`);
 			
-			/*if (json.Methodname == "DialogueSelectedAll") {
-				storystate = json.Parameters;
-			} else if (json.Methodname == "MakeChoiceAll") {
-				storystate = json.Parameters;
-			}*/
-			
 			var playerRoom = players.filter(x => x.joincode == client.joincode);
 			playerRoom.forEach(function each(player) {		
 				player.send(`${data}`);
 			});
-			/*wss.clients.forEach(function each(aClient) {
-			   aClient.send(`${data}`);
-			});*/
+
 		}
 		
 	});
