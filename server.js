@@ -92,7 +92,6 @@ wss.on('connection', function connection (client) {
 				});
 			});
 
-			
 		} else if (json.Classname == "reconnect") {
 			
 			var player = players.find(x => x.socketsid == json.Parameters);
@@ -122,8 +121,6 @@ wss.on('connection', function connection (client) {
 			
 			var playerRoom = players.filter(x => x.joincode == client.joincode);
 			playerRoom.forEach(function each(player) {		
-			//wss.clients.forEach(function each(player) {		
-				console.log(`send to player.socketsid ${player.socketsid}`);
 				player.send(`${data}`);
 			});
 
