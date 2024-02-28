@@ -71,7 +71,7 @@ wss.on('connection', function connection (client) {
 					players.push(client);
 				} else {
 					var msg = `error: cannot find joincode: ${client.joincode}`;
-					client.send(`{"Classname": "GameManager", "Methodname": "ShowMessage", "Parameters": "['${msg}']" }`);
+					client.send(`{"Classname": "LobbyManager", "Methodname": "JoinCanceled", "Parameters": "['${msg}']" }`);
 					console.log(msg);
 				}
 				
@@ -113,7 +113,10 @@ wss.on('connection', function connection (client) {
 				//client.send(`{"Classname": "DialogueManager", "Methodname": "DialogueSelectedAll", "Parameters": ${JSON.stringify(storystate)}}`);
 				//console.log(`storystate: ${JSON.stringify(storystate)}`);
 			} else {
-				console.log(`error: cannot find client socket id: ${json.Parameters}`);
+				
+				var msg = `error: cannot find client socket id: ${json.Parameters}`;
+				client.send(`{"Classname": "GameManager", "Methodname": "ShowMessage", "Parameters": "['${msg}']" }`);
+				console.log(msg);
 			}
 			
 		} else {
