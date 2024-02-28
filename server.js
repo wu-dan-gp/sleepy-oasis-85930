@@ -70,7 +70,9 @@ wss.on('connection', function connection (client) {
 					client.ishost = false;
 					players.push(client);
 				} else {
-					console.log(`error: cannot find joincode: ${client.joincode}`);
+					var msg = `error: cannot find joincode: ${client.joincode}`;
+					client.send(`{"Classname": "GameManager", "Methodname": "ShowMessage", "Parameters": "['${msg}']" }`);
+					console.log(msg);
 				}
 				
 			}
