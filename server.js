@@ -105,9 +105,11 @@ wss.on('connection', function connection (client) {
 				client.ishost = player.ishost;
 				client.connected = true;
 				console.log(`Client ${client.socketsid} reconnected!`);
-
-				players = players.filter((x) => x !== player);
-				players.push(client);
+				
+				console.log(`wss.clients.size ${wss.clients.size} `);
+				console.log(`players.length ${players.length} `);
+				//players = players.filter((x) => x !== player);
+				//players.push(client);
 
 				//client.send(`${storystate}`);
 				//client.send(`{"Classname": "DialogueManager", "Methodname": "DialogueSelectedAll", "Parameters": ${JSON.stringify(storystate)}}`);
