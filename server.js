@@ -86,9 +86,9 @@ wss.on('connection', function connection (client) {
 
 				playerRoom.forEach(function each(player) {
 					if (client.id == player.id) {
-						aClient.send(`{"Classname": "GameManager", "Methodname": "InitPlayersWSS", "Parameters": "['${player.id}', '${player.socketsid}', '${player.joincode}', '${player.gamename}', '']" }`);
+						aClient.send(`{"Classname": "GameManager", "Methodname": "InitPlayersWSS", "Parameters": "['${player.id}', '${player.socketsid}', '${player.joincode}', '${player.gamename}']" }`);
 					} else {
-						aClient.send(`{"Classname": "GameManager", "Methodname": "InitPlayersWSS", "Parameters": "['${player.id}', '', '', '', '']" }`);
+						aClient.send(`{"Classname": "GameManager", "Methodname": "InitPlayersWSS", "Parameters": "['${player.id}', '', '', '']" }`);
 					}
 				
 				});
@@ -109,29 +109,21 @@ wss.on('connection', function connection (client) {
 				console.log(`wss.clients.size ${wss.clients.size} `); // TODO: if client keeps clicking rejoin make sure there are no dups in wss.clients
 				console.log(`players.length ${players.length} `);
 
-				// broadcast to all clients in a room that a client connected so they have same list
-				var playerRoom = players.filter(x => x.joincode == player.joincode);
-				var playerRoomOuter = players.filter(x => x.joincode == player.joincode);
 				
-				playerRoom.forEach(function each(aPlayer) {
-					console.log(`aPlayer.id ${aPlayer.id} `);
+				var playerRoom = players.filter(x => x.joincode == player.joincode);
+
+				client.send(`{"Classname": "GameManager", "Methodname": "InitPlayersOnReconnectWSS", "Parameters": "['${playerRoom.length}', '${client.id}', '${client.socketsid}', '${client.joincode}', '${client.gamename}']" }`);
+
+				// broadcast to all clients in a room that a client connected so they have same list
+				/*playerRoom.forEach(function each(aPlayer) {
+					
 					if (client.id == aPlayer.id) {
 						client.send(`{"Classname": "GameManager", "Methodname": "InitPlayersWSS", "Parameters": "['${aPlayer.id}', '${aPlayer.socketsid}', '${aPlayer.joincode}', '${aPlayer.gamename}', 'true']" }`);
 					} else {
 						client.send(`{"Classname": "GameManager", "Methodname": "InitPlayersWSS", "Parameters": "['${aPlayer.id}', '', '', '', 'true']" }`);
 					}
-					/*playerRoom.forEach(function each(aPlayer) {
-						if (client.id == aPlayer.id) {
-							aClient.send(`{"Classname": "GameManager", "Methodname": "InitPlayersWSS", "Parameters": "['${aPlayer.id}', '${aPlayer.socketsid}', '${aPlayer.joincode}', '${aPlayer.gamename}', 'true']" }`);
-						} else {
-							aClient.send(`{"Classname": "GameManager", "Methodname": "InitPlayersWSS", "Parameters": "['${aPlayer.id}', '', '', '', 'true']" }`);
-						}
 					
-					});*/
-				});
-
-				//players = players.filter((x) => x !== player);
-				//players.push(client);
+				});*/
 
 				//client.send(`${storystate}`);
 				//client.send(`{"Classname": "DialogueManager", "Methodname": "DialogueSelectedAll", "Parameters": ${JSON.stringify(storystate)}}`);
