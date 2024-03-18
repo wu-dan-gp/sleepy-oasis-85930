@@ -109,7 +109,6 @@ wss.on('connection', function connection (client) {
 				console.log(`wss.clients.size ${wss.clients.size} `); // TODO: if client keeps clicking rejoin make sure there are no dups in wss.clients
 				console.log(`players.length ${players.length} `);
 
-				
 				var playerRoom = players.filter(x => x.joincode == player.joincode);
 
 				client.send(`{"Classname": "GameManager", "Methodname": "InitPlayersOnReconnectWSS", "Parameters": "['${playerRoom.length}', '${client.id}', '${client.socketsid}', '${client.joincode}', '${client.gamename}']" }`);
@@ -142,6 +141,7 @@ wss.on('connection', function connection (client) {
 			
 			var playerRoom = players.filter(x => x.joincode == client.joincode);
 			playerRoom.forEach(function each(player) {		
+				console.log(`player.id ${player.id} `);
 				player.send(`${data}`);
 			});
 
