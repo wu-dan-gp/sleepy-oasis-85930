@@ -113,7 +113,9 @@ wss.on('connection', function connection (client) {
 				players.splice(idx, 1);
 				players.push(client);
 
-				player.send(`{"Classname": "GameManager", "Methodname": "InitPlayersOnReconnectWSS", "Parameters": "['${playerRoom.length}', '${player.id}', '${player.socketsid}', '${player.joincode}', '${player.gamename}']" }`);
+				var playerRoom = players.filter(x => x.joincode == client.joincode);
+
+				client.send(`{"Classname": "GameManager", "Methodname": "InitPlayersOnReconnectWSS", "Parameters": "['${playerRoom.length}', '${client.id}', '${client.socketsid}', '${client.joincode}', '${client.gamename}']" }`);
 
 				//client.send(`${storystate}`);
 				//client.send(`{"Classname": "DialogueManager", "Methodname": "DialogueSelectedAll", "Parameters": ${JSON.stringify(storystate)}}`);
