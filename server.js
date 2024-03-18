@@ -115,9 +115,9 @@ wss.on('connection', function connection (client) {
 				playerRoomOuter.forEach(function each(aClient) {
 					playerRoom.forEach(function each(player) {
 						if (client.id == player.id) {
-							aClient.send(`{"Classname": "GameManager", "Methodname": "InitPlayersWSS", "Parameters": "['${player.id}', '${player.socketsid}', '${player.joincode}', '${player.gamename}', true]" }`);
+							aClient.send(`{"Classname": "GameManager", "Methodname": "InitPlayersWSS", "Parameters": "['${player.id}', '${player.socketsid}', '${player.joincode}', '${player.gamename}', 'true']" }`);
 						} else {
-							aClient.send(`{"Classname": "GameManager", "Methodname": "InitPlayersWSS", "Parameters": "['${player.id}', '', '', '', true]" }`);
+							aClient.send(`{"Classname": "GameManager", "Methodname": "InitPlayersWSS", "Parameters": "['${player.id}', '', '', '', 'true']" }`);
 						}
 					
 					});
