@@ -109,20 +109,11 @@ wss.on('connection', function connection (client) {
 				console.log(`wss.clients.size ${wss.clients.size} `); // TODO: if client keeps clicking rejoin make sure there are no dups in wss.clients
 				console.log(`players.length ${players.length} `);
 
-				var playerRoom = players.filter(x => x.joincode == player.joincode);
+				const idx = players.indexOf(player);
+				players.splice(idx, 1);
+				players.push(client);
 
 				player.send(`{"Classname": "GameManager", "Methodname": "InitPlayersOnReconnectWSS", "Parameters": "['${playerRoom.length}', '${player.id}', '${player.socketsid}', '${player.joincode}', '${player.gamename}']" }`);
-
-				// broadcast to all clients in a room that a client connected so they have same list
-				/*playerRoom.forEach(function each(aPlayer) {
-					
-					if (client.id == aPlayer.id) {
-						client.send(`{"Classname": "GameManager", "Methodname": "InitPlayersWSS", "Parameters": "['${aPlayer.id}', '${aPlayer.socketsid}', '${aPlayer.joincode}', '${aPlayer.gamename}', 'true']" }`);
-					} else {
-						client.send(`{"Classname": "GameManager", "Methodname": "InitPlayersWSS", "Parameters": "['${aPlayer.id}', '', '', '', 'true']" }`);
-					}
-					
-				});*/
 
 				//client.send(`${storystate}`);
 				//client.send(`{"Classname": "DialogueManager", "Methodname": "DialogueSelectedAll", "Parameters": ${JSON.stringify(storystate)}}`);
