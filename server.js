@@ -115,11 +115,10 @@ wss.on('connection', function connection (client) {
 				players.push(client);
 
 				var playerRoom = players.filter(x => x.joincode == client.joincode);
-				client.send(`{"Classname": "GameManager", "Methodname": "InitPlayersOnReconnectWSS", "Parameters": "['${playerRoom.length}']" }`);
+				client.send(`{"Classname": "GameManager", "Methodname": "InitPlayersOnReconnectWSS", "Parameters": "['${playerRoom.length}', '${storystate}']" }`);
 
-				client.send(`${storystate}`);
-				//client.send(`{"Classname": "DialogueManager", "Methodname": "DialogueSelectedAll", "Parameters": "['${JSON.stringify(storystate)}']" }`);
-				//console.log(`storystate: ${JSON.stringify(storystate)}`);
+				//client.send(`${storystate}`);
+				
 			} else {
 				
 				var msg = `error: cannot find client socket id: ${json.Parameters}`;
