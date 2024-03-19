@@ -118,8 +118,8 @@ wss.on('connection', function connection (client) {
 				client.send(`{"Classname": "GameManager", "Methodname": "InitPlayersOnReconnectWSS", "Parameters": "['${playerRoom.length}']" }`);
 
 				//client.send(`${storystate}`);
-				//client.send(`{"Classname": "DialogueManager", "Methodname": "DialogueSelectedAll", "Parameters": ${JSON.stringify(storystate)}}`);
-				//console.log(`storystate: ${JSON.stringify(storystate)}`);
+				client.send(`{"Classname": "DialogueManager", "Methodname": "DialogueSelectedAll", "Parameters": "['${JSON.stringify(storystate)}']" }`);
+				console.log(`storystate: ${JSON.stringify(storystate)}`);
 			} else {
 				
 				var msg = `error: cannot find client socket id: ${json.Parameters}`;
@@ -129,7 +129,7 @@ wss.on('connection', function connection (client) {
 			
 		} else {
 			console.log(`broadcast: ${json.Classname} ${json.Methodname}`);
-			//storystate = data;
+			storystate = data;
 			//storystate = json.Parameters;
 			
 			var playerRoom = players.filter(x => x.joincode == client.joincode);
